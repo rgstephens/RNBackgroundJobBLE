@@ -1,4 +1,6 @@
-This is a React Native example app that uses [react-native-background-job](https://github.com/vikeri/react-native-background-job) to write both a timestamp and the results of a bluetooth scan every 10 seconds to a Redux store.
+This is a React Native example app that uses [react-native-background-job](https://github.com/vikeri/react-native-background-job) to write both a timestamp and the results of a bluetooth scan every 10 seconds to a Redux store. The [react-native-ble-plx](react-native-ble-plx) package is used for Bluetooth scanning.
+
+**As shown in the screenshot below, if the app loses focus, the 10 second timestamp messages continue but the Bluetooth Scanning stops**
 
 ## Interval Method
 
