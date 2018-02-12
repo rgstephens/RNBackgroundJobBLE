@@ -1,0 +1,29 @@
+This is a React Native example app that runs a setInterval loop every 10 seconds and writes the current time to a Redux store. It's a simple demonstration that the setInterval stops running when the app loses focus.
+
+The `react-native init` [command](https://facebook.github.io/react-native/docs/getting-started.html) was used to create the initial project and the [react-native-create-library](https://github.com/frostney/react-native-create-library) tool was used as a start for the foreground service.
+
+As of this writing, there are multiple approaches to get the timer to continue when the app runs in the background on Android:
+
+* Run any **Android Foreground Service**.  I've found that this doesn't work. The react-native-background-job package tried using a Foreground Service and found it to be [unstable](https://github.com/vikeri/react-native-background-job/issues/39) so it was removed from the 2.x version. On the official React Native [pain points site](https://react-native.canny.io), Anthony Benkhebbab [suggests](https://react-native.canny.io/feature-requests/p/background-timer-execution) that running a Foreground Service using Android API > 23 will work but I have not found this to be the case.
+* Run a native **Android [AlarmManager]((https://facebook.github.io/react-native/docs/native-modules-android.html#sending-events-to-javascript))** that sends a message to the JS side at a specified interval. This approach is used by [react-native-background-job](https://github.com/vikeri/react-native-background-job).  It also only executes your task when the app is in the background.  
+* Use the [Firebase JobDispatcher](https://github.com/firebase/firebase-jobdispatcher-android) which is also used by [react-native-background-job](https://github.com/vikeri/react-native-background-job)
+* Use the new React Native [Headless JS](https://facebook.github.io/react-native/docs/headless-js-android.html) but this is limited to running your task every 15 minutes. It also only executes your task when the app is in the background.
+
+Some have suggested [react-native-background-timer](https://www.npmjs.com/package/react-native-background-timer) or [react-native-background-job](https://github.com/vikeri/react-native-background-job) but these have other limitations. 
+
+
+## Main Component
+
+The app starts a loop that runs every 10 seconds and displays the elapsed time (should be 10 seconds). The loop pushes a timestamp into the Redux store which is read and displayed by the main component. There's a switch at the top of the screen to enable/disable the foreground service. You'll see the Android Foreground Service notification confirming that it is running.
+
+## Try it Out!
+
+```
+git clone https://github.com/rgstephens/RNSetInterval .git
+yarn
+react-native link react-native-background-job
+npm start
+react-native run-android
+```
+
+![Screenshot](screenshot.png)
